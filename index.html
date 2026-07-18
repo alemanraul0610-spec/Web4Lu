@@ -10,9 +10,9 @@
   <meta name="color-scheme" content="light" />
   <meta
     name="description"
-    content="Una pregunta especial para Lu, de parte de Raúl."
+    content="Una pregunta especial para Luz, de parte de Raúl."
   />
-  <title>Para Lu 🌷</title>
+  <title>Para Luz 🌷</title>
 
   <style>
     :root {
@@ -403,8 +403,19 @@
       color: var(--pink-700);
       font-size: 11px;
       font-weight: 900;
-      letter-spacing: 0.20em;
+      letter-spacing: 0.17em;
       text-transform: uppercase;
+    }
+
+    .eyebrow span {
+      display: inline-block;
+      margin-left: 0.28em;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      font-style: italic;
+      letter-spacing: 0;
+      text-transform: none;
+      opacity: 0.72;
     }
 
     h1 {
@@ -591,9 +602,11 @@
         linear-gradient(145deg, #fde7ef, var(--pink-200));
       border: 1px solid rgba(180, 96, 130, 0.20);
       transition:
-        transform 110ms ease,
-        box-shadow 180ms ease,
-        filter 180ms ease;
+        left 460ms cubic-bezier(.22, 1, .36, 1),
+        top 460ms cubic-bezier(.22, 1, .36, 1),
+        transform 460ms cubic-bezier(.22, 1, .36, 1),
+        box-shadow 200ms ease,
+        filter 200ms ease;
       will-change: left, top, transform;
     }
 
@@ -604,14 +617,10 @@
     }
 
     #noBtn.is-running {
-      animation: noWiggle 230ms ease;
-    }
-
-    @keyframes noWiggle {
-      0% { scale: 1; }
-      35% { scale: 0.94; rotate: -4deg; }
-      70% { scale: 1.04; rotate: 4deg; }
-      100% { scale: 1; rotate: 0deg; }
+      filter: brightness(1.035);
+      box-shadow:
+        0 18px 38px rgba(150, 80, 107, 0.24),
+        0 0 0 6px rgba(248, 213, 226, 0.25);
     }
 
     .ripple {
@@ -628,6 +637,32 @@
         opacity: 0;
         transform: translate(-50%, -50%) scale(6);
       }
+    }
+
+
+    .escape-note {
+      max-width: 420px;
+      max-height: 0;
+      margin: 0 auto;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+      line-height: 1.45;
+      opacity: 0;
+      transform: translateY(-5px);
+      transition:
+        max-height 350ms ease,
+        margin-top 350ms ease,
+        opacity 350ms ease,
+        transform 350ms ease;
+    }
+
+    .escape-note.show {
+      max-height: 70px;
+      margin-top: 13px;
+      opacity: 0.72;
+      transform: translateY(0);
     }
 
     .success-message {
@@ -697,31 +732,82 @@
       pointer-events: none;
     }
 
-    .burst-item {
+    .celebration-petal {
       position: fixed;
-      left: 50%;
-      top: 50%;
-      opacity: 1;
+      width: var(--petal-width);
+      height: calc(var(--petal-width) * 0.58);
+      border-radius: 80% 20% 72% 28% / 70% 28% 72% 30%;
+      opacity: 0;
       pointer-events: none;
+      background: var(--petal-color);
+      box-shadow: 0 4px 12px rgba(137, 78, 101, 0.10);
+      transform: translate3d(0, 12px, 0) rotate(var(--petal-start-rotation)) scale(0.5);
+      animation: petalAppear var(--petal-duration) cubic-bezier(.16, 1, .3, 1) forwards;
       will-change: transform, opacity;
-      animation: burst 1600ms cubic-bezier(.15,.64,.25,1) forwards;
     }
 
-    @keyframes burst {
-      to {
+    @keyframes petalAppear {
+      0% {
         opacity: 0;
         transform:
-          translate3d(var(--burst-x), var(--burst-y), 0)
-          rotate(var(--burst-r))
-          scale(var(--burst-s));
+          translate3d(0, 12px, 0)
+          rotate(var(--petal-start-rotation))
+          scale(0.5);
+      }
+      18% {
+        opacity: 0.92;
+      }
+      68% {
+        opacity: 0.78;
+      }
+      100% {
+        opacity: 0;
+        transform:
+          translate3d(var(--petal-drift-x), var(--petal-drift-y), 0)
+          rotate(var(--petal-end-rotation))
+          scale(1.12);
+      }
+    }
+
+    .celebration-spark {
+      position: fixed;
+      color: var(--spark-color);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: var(--spark-size);
+      line-height: 1;
+      opacity: 0;
+      pointer-events: none;
+      text-shadow: 0 0 12px rgba(255, 226, 112, 0.58);
+      animation: sparkAppear var(--spark-duration) ease-out forwards;
+    }
+
+    @keyframes sparkAppear {
+      0% {
+        opacity: 0;
+        transform: scale(0.25) rotate(0deg);
+      }
+      30% {
+        opacity: 1;
+        transform: scale(1.18) rotate(45deg);
+      }
+      70% {
+        opacity: 0.72;
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.7) rotate(115deg) translateY(-16px);
       }
     }
 
     .fall-item {
       position: fixed;
       top: -60px;
+      width: var(--fall-size);
+      height: calc(var(--fall-size) * 0.58);
+      border-radius: 80% 20% 72% 28% / 70% 28% 72% 30%;
       opacity: 0;
       pointer-events: none;
+      background: var(--fall-color);
       animation: celebrationFall var(--fall-duration) linear forwards;
     }
 
@@ -730,7 +816,7 @@
         opacity: 0;
         transform: translate3d(0, -60px, 0) rotate(0deg);
       }
-      10%, 88% { opacity: 1; }
+      10%, 82% { opacity: 0.82; }
       100% {
         opacity: 0;
         transform:
@@ -874,10 +960,10 @@
         <span>🌷</span>
       </div>
 
-      <div class="eyebrow">Una pregunta muy seria para Lu</div>
+      <div class="eyebrow">Una pregunta muy, muy, muy seria… <span>(bueno, más o menos)</span></div>
 
       <h1>
-        <span class="name">Lu</span>, ¿puedo ser tu novio?
+        <span class="name">Luz</span>, ¿puedo ser tu novio?
       </h1>
 
       <p class="story" id="story">
@@ -898,8 +984,13 @@
         </button>
       </div>
 
+      <div class="escape-note" id="escapeNote" aria-live="polite">
+        Diagnóstico técnico: el botón «No» está huyendo por razones
+        completamente misteriosas.
+      </div>
+
       <div class="success-message" id="successMessage" role="status" aria-live="polite">
-        Entonces esta historia apenas comienza, Lu 💛🌷
+        Entonces esta historia apenas comienza, Luz 💛🌷
       </div>
 
       <div class="signature">
@@ -917,6 +1008,7 @@
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const buttonArea = document.getElementById("buttonArea");
+    const escapeNote = document.getElementById("escapeNote");
     const successMessage = document.getElementById("successMessage");
     const successHalo = document.getElementById("successHalo");
     const celebration = document.getElementById("celebration");
@@ -1070,7 +1162,7 @@
       noBtn.classList.remove("is-running");
       void noBtn.offsetWidth;
       noBtn.classList.add("is-running");
-      setTimeout(() => noBtn.classList.remove("is-running"), 260);
+      setTimeout(() => noBtn.classList.remove("is-running"), 470);
     }
 
     function moveNoButton(pointer = lastPointer, force = false) {
@@ -1078,28 +1170,42 @@
 
       const now = performance.now();
 
-      if (!force && now < noMoveLockedUntil) return;
-      noMoveLockedUntil = now + 95;
+      // Evita que pointerdown + click lancen dos recorridos al mismo tiempo.
+      if (noIsFloating && now < noMoveLockedUntil) return;
+      noMoveLockedUntil = now + 485;
 
       createNoPlaceholder();
 
-      if (!noIsFloating) {
+      const isFirstEscape = !noIsFloating;
+      let startingRect = null;
+
+      if (isFirstEscape) {
+        startingRect = noBtn.getBoundingClientRect();
+
         /*
           La tarjeta usa transformaciones 3D y overflow: hidden.
-          Un elemento fixed dentro de un ancestro transformado deja de tomar
-          el viewport como referencia y puede quedar recortado. Al mover el
-          botón directamente al body, siempre permanece visible.
+          Movemos el botón al body, pero primero conservamos exactamente
+          su posición visual para que el primer recorrido también sea suave.
         */
+        noBtn.style.transition = "none";
         document.body.appendChild(noBtn);
 
         noBtn.style.position = "fixed";
+        noBtn.style.left = `${startingRect.left}px`;
+        noBtn.style.top = `${startingRect.top}px`;
         noBtn.style.margin = "0";
         noBtn.style.right = "auto";
         noBtn.style.bottom = "auto";
         noBtn.style.maxWidth = "calc(100vw - 36px)";
         noBtn.style.visibility = "visible";
         noBtn.style.opacity = "1";
+        noBtn.style.transform = "rotate(0deg) scale(1)";
         noIsFloating = true;
+        lastNoPosition = { x: startingRect.left, y: startingRect.top };
+
+        // Forzamos un frame inicial antes de activar la transición.
+        void noBtn.offsetWidth;
+        noBtn.style.removeProperty("transition");
       }
 
       const target = chooseNoPosition(pointer);
@@ -1107,12 +1213,21 @@
       noMoveCount += 1;
 
       noBtn.textContent = noLabels[noMoveCount % noLabels.length];
-      noBtn.style.left = `${target.x}px`;
-      noBtn.style.top = `${target.y}px`;
-      noBtn.style.transform =
-        `rotate(${randomBetween(-7, 7).toFixed(2)}deg) scale(${randomBetween(0.98, 1.03).toFixed(3)})`;
+      escapeNote.classList.add("show");
 
-      animateNoReaction();
+      const applyTarget = () => {
+        noBtn.style.left = `${target.x}px`;
+        noBtn.style.top = `${target.y}px`;
+        noBtn.style.transform =
+          `rotate(${randomBetween(-6, 6).toFixed(2)}deg) scale(${randomBetween(0.985, 1.025).toFixed(3)})`;
+        animateNoReaction();
+      };
+
+      if (isFirstEscape) {
+        requestAnimationFrame(() => requestAnimationFrame(applyTarget));
+      } else {
+        applyTarget();
+      }
     }
 
     function keepNoVisible() {
@@ -1182,50 +1297,88 @@
     }
 
     function launchCelebration() {
-      const burstSymbols = ["🌷", "🌼", "🌸", "💛", "💕", "✨"];
-      const fallSymbols = ["🌸", "🌼", "💛", "✨"];
+      const petalColors = [
+        "#f4b8cd",
+        "#f8d5e2",
+        "#ffe899",
+        "#fff2ba",
+        "#eaa1bb"
+      ];
+      const sparkColors = ["#d78cab", "#e9bd42", "#fff0a5"];
 
       successHalo.classList.remove("show");
       void successHalo.offsetWidth;
       successHalo.classList.add("show");
 
-      for (let i = 0; i < 56; i += 1) {
-        const item = document.createElement("span");
-        item.className = "burst-item";
-        item.textContent =
-          burstSymbols[Math.floor(Math.random() * burstSymbols.length)];
-        item.style.fontSize = `${randomBetween(18, 38)}px`;
-        item.style.setProperty(
-          "--burst-x",
-          `${randomBetween(-window.innerWidth * 0.54, window.innerWidth * 0.54)}px`
+      /*
+        Los elementos nacen repartidos por la pantalla, no todos en el
+        centro. Así la celebración se siente ligera y no parece texto
+        amontonado durante el primer segundo.
+      */
+      const petalCount = reduceMotion ? 8 : 28;
+      for (let i = 0; i < petalCount; i += 1) {
+        const petal = document.createElement("i");
+        petal.className = "celebration-petal";
+        petal.style.left = `${randomBetween(5, 95)}vw`;
+        petal.style.top = `${randomBetween(10, 88)}vh`;
+        petal.style.setProperty("--petal-width", `${randomBetween(9, 20)}px`);
+        petal.style.setProperty(
+          "--petal-color",
+          petalColors[Math.floor(Math.random() * petalColors.length)]
         );
-        item.style.setProperty(
-          "--burst-y",
-          `${randomBetween(-window.innerHeight * 0.58, window.innerHeight * 0.34)}px`
+        petal.style.setProperty("--petal-drift-x", `${randomBetween(-70, 70)}px`);
+        petal.style.setProperty("--petal-drift-y", `${randomBetween(-85, 35)}px`);
+        petal.style.setProperty(
+          "--petal-start-rotation",
+          `${randomBetween(-90, 90)}deg`
         );
-        item.style.setProperty("--burst-r", `${randomBetween(-480, 480)}deg`);
-        item.style.setProperty("--burst-s", randomBetween(0.72, 1.45).toFixed(2));
-        item.style.animationDelay = `${randomBetween(0, 150)}ms`;
+        petal.style.setProperty(
+          "--petal-end-rotation",
+          `${randomBetween(180, 540)}deg`
+        );
+        petal.style.setProperty("--petal-duration", `${randomBetween(1.25, 2.1)}s`);
+        petal.style.animationDelay = `${randomBetween(0, 260)}ms`;
 
-        celebration.appendChild(item);
-        setTimeout(() => item.remove(), 1900);
+        celebration.appendChild(petal);
+        setTimeout(() => petal.remove(), 2600);
+      }
+
+      const sparkCount = reduceMotion ? 5 : 16;
+      for (let i = 0; i < sparkCount; i += 1) {
+        const spark = document.createElement("span");
+        spark.className = "celebration-spark";
+        spark.textContent = "✦";
+        spark.style.left = `${randomBetween(7, 93)}vw`;
+        spark.style.top = `${randomBetween(8, 86)}vh`;
+        spark.style.setProperty("--spark-size", `${randomBetween(12, 25)}px`);
+        spark.style.setProperty(
+          "--spark-color",
+          sparkColors[Math.floor(Math.random() * sparkColors.length)]
+        );
+        spark.style.setProperty("--spark-duration", `${randomBetween(1.0, 1.7)}s`);
+        spark.style.animationDelay = `${randomBetween(0, 320)}ms`;
+
+        celebration.appendChild(spark);
+        setTimeout(() => spark.remove(), 2300);
       }
 
       if (!reduceMotion) {
-        for (let i = 0; i < 34; i += 1) {
-          const item = document.createElement("span");
-          item.className = "fall-item";
-          item.textContent =
-            fallSymbols[Math.floor(Math.random() * fallSymbols.length)];
-          item.style.left = `${randomBetween(0, 100)}%`;
-          item.style.fontSize = `${randomBetween(15, 29)}px`;
-          item.style.setProperty("--fall-drift", `${randomBetween(-90, 90)}px`);
-          item.style.setProperty("--fall-rotation", `${randomBetween(240, 760)}deg`);
-          item.style.setProperty("--fall-duration", `${randomBetween(2.8, 5.2)}s`);
-          item.style.animationDelay = `${randomBetween(0, 850)}ms`;
+        for (let i = 0; i < 20; i += 1) {
+          const petal = document.createElement("i");
+          petal.className = "fall-item";
+          petal.style.left = `${randomBetween(0, 100)}%`;
+          petal.style.setProperty("--fall-size", `${randomBetween(8, 17)}px`);
+          petal.style.setProperty(
+            "--fall-color",
+            petalColors[Math.floor(Math.random() * petalColors.length)]
+          );
+          petal.style.setProperty("--fall-drift", `${randomBetween(-95, 95)}px`);
+          petal.style.setProperty("--fall-rotation", `${randomBetween(240, 760)}deg`);
+          petal.style.setProperty("--fall-duration", `${randomBetween(3.0, 5.0)}s`);
+          petal.style.animationDelay = `${randomBetween(120, 900)}ms`;
 
-          celebration.appendChild(item);
-          setTimeout(() => item.remove(), 6200);
+          celebration.appendChild(petal);
+          setTimeout(() => petal.remove(), 6200);
         }
       }
     }
@@ -1237,8 +1390,9 @@
       createRipple(yesBtn, event);
 
       card.classList.add("success");
+      escapeNote.classList.remove("show");
       yesBtn.textContent = "Sí, Raúl 💛";
-      yesBtn.setAttribute("aria-label", "Lu dijo que sí");
+      yesBtn.setAttribute("aria-label", "Luz dijo que sí");
       noBtn.style.display = "none";
 
       if (noPlaceholder) {
@@ -1246,7 +1400,7 @@
       }
 
       document.querySelector("h1").innerHTML =
-        '<span class="name">Lu</span> dijo que sí 🌷';
+        '<span class="name">Luz</span> dijo que sí 🌷';
 
       story.innerHTML =
         "Prometo cuidar esta historia con la misma atención con la que cuido " +
