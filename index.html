@@ -2763,7 +2763,7 @@
       </div>
 
       <p class="playlist-caption">
-        Elegí las canciones más dulces de tu playlist para que acompañen este momento sin competir con mi voz.
+        Elegí las canciones más dulces de tu playlist. Intentarán acompañar la carta desde el principio y se pausarán cuando llegue mi nota de voz.
       </p>
 
       <div class="curated-now" id="curatedNow">
@@ -2782,7 +2782,7 @@
       </div>
 
       <p class="spotify-autoplay-note" id="spotifyAutoplayNote">
-        La playlist continuará después de la nota de voz para que nada opaque lo que quiero decirte.
+        Intentaremos comenzar con «Como Queremos». Si el navegador bloquea el inicio, bastará con abrir la carta o tocar Play una vez.
       </p>
 
       <div class="sfx-row">
@@ -2916,7 +2916,7 @@
           </button>
           <a
             class="reply-raul"
-            href="https://wa.me/?text=Te%20dije%20que%20sí%20💛"
+            href="https://wa.me/529222090889?text=Te%20dije%20que%20s%C3%AD%20%F0%9F%92%9B"
             target="_blank"
             rel="noopener noreferrer"
           >Responderle a Raúl 💬</a>
@@ -3028,6 +3028,8 @@
     let spotifyController = null;
     let spotifyReady = false;
     let voiceHasPlayed = false;
+    let ambientPlaylistRequested = true;
+    let ambientPlaylistStarted = false;
 
     const noLabels = [
       "No 🙈",
@@ -3139,6 +3141,9 @@
     function openLetter() {
       if (letterOpened) return;
       letterOpened = true;
+
+      // Este clic es un gesto válido para los navegadores que bloquean autoplay.
+      requestAmbientPlaylistStart({ fromUserGesture: true });
       playPaperSound();
 
       introOverlay.classList.add("is-opening");
@@ -3173,6 +3178,46 @@
     }
 
 
+
+    function requestAmbientPlaylistStart({ fromUserGesture = false } = {}) {
+      ambientPlaylistRequested = true;
+
+      if (accepted || (!voiceAudio.paused && !voiceAudio.ended)) {
+        return;
+      }
+
+      spotifyAutoplayNote.textContent = spotifyReady
+        ? "«Como Queremos» está intentando acompañar la carta. La música se pausará antes de la nota de voz."
+        : "Spotify está cargando. La música intentará comenzar en cuanto esté lista.";
+
+      if (!spotifyController || !spotifyReady) {
+        return;
+      }
+
+      curatedPlaybackStarted = true;
+      curatedTrackIndex = 0;
+      updateCuratedTrackUI();
+
+      try {
+        /*
+          La primera canción ya se entrega al crear el controlador.
+          play() se invoca directamente para conservar el gesto del usuario
+          cuando esta función proviene del toque sobre la carta.
+        */
+        spotifyController.play();
+
+        if (fromUserGesture) {
+          window.setTimeout(() => {
+            if (!ambientPlaylistStarted && spotifyController) {
+              spotifyController.play();
+            }
+          }, 260);
+        }
+      } catch (error) {
+        console.warn("Spotify no permitió iniciar la reproducción:", error);
+      }
+    }
+
     window.onSpotifyIframeApiReady = (IFrameAPI) => {
       const options = {
         width: "100%",
@@ -3185,9 +3230,15 @@
 
         controller.addListener("ready", () => {
           spotifyReady = true;
+
+          if (ambientPlaylistRequested && !accepted) {
+            requestAmbientPlaylistStart();
+          }
         });
 
         controller.addListener("playback_started", (event) => {
+          ambientPlaylistStarted = true;
+
           if (!voiceAudio.paused && !voiceAudio.ended) {
             controller.pause();
             spotifyAutoplayNote.textContent =
@@ -4501,6 +4552,16 @@
         navigator.vibrate([45, 35, 80]);
       }
     }
+
+    document.addEventListener(
+      "pointerdown",
+      () => {
+        if (!accepted) {
+          requestAmbientPlaylistStart({ fromUserGesture: true });
+        }
+      },
+      { once: true, capture: true, passive: true }
+    );
 
     openLetterBtn.addEventListener("click", openLetter);
 
