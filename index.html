@@ -10,8 +10,29 @@
   <meta name="color-scheme" content="light" />
   <meta
     name="description"
-    content="Una pregunta especial para Luz, de parte de Raúl."
+    content="Una pregunta muy, muy, muy seria para Luz, de parte de Raúl."
   />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Tengo una pregunta muy, muy, muy seria para ti" />
+  <meta
+    property="og:description"
+    content="Una pequeña carta hecha con cariño, flores y un poquito de delulu."
+  />
+  <meta property="og:image" content="social-preview.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Una pregunta especial para Luz, de parte de Raúl." />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Una pregunta muy, muy, muy seria para Luz" />
+  <meta
+    name="twitter:description"
+    content="Una pequeña carta hecha con cariño."
+  />
+  <meta name="twitter:image" content="social-preview.png" />
+
+  <link rel="image_src" href="social-preview.png" />
   <title>Para Luz 🌷</title>
 
   <style>
@@ -1704,6 +1725,754 @@
       color: var(--pink-700);
     }
 
+
+    /* ================================================================
+       Secuencia previa a la pregunta
+    ================================================================ */
+    .question-prelude {
+      display: grid;
+      grid-template-columns: auto 2px;
+      justify-content: center;
+      align-items: center;
+      min-height: 84px;
+      margin: 8px auto 4px;
+      color: var(--pink-700);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(21px, 5.4vw, 31px);
+      font-style: italic;
+      line-height: 1.3;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(10px);
+      transition:
+        opacity 500ms ease,
+        transform 650ms cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .question-prelude.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .question-prelude.is-leaving {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+
+    .typing-caret {
+      width: 2px;
+      height: 1.05em;
+      margin-left: 4px;
+      border-radius: 999px;
+      background: var(--pink-500);
+      animation: caretBlink 780ms steps(1) infinite;
+    }
+
+    @keyframes caretBlink {
+      0%, 48% { opacity: 1; }
+      49%, 100% { opacity: 0; }
+    }
+
+    .question-stage {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(18px);
+      filter: blur(5px);
+      pointer-events: none;
+      transition:
+        opacity 820ms ease,
+        visibility 820ms ease,
+        transform 900ms cubic-bezier(.16, 1, .3, 1),
+        filter 820ms ease;
+    }
+
+    body.question-revealed .question-stage {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      filter: blur(0);
+      pointer-events: auto;
+    }
+
+    body:not(.question-revealed) .question-stage .eyebrow,
+    body:not(.question-revealed) .question-stage h1,
+    body:not(.question-revealed) .question-stage .story,
+    body:not(.question-revealed) .question-stage .buttons {
+      animation-play-state: paused !important;
+    }
+
+    body.question-revealed .question-stage .eyebrow,
+    body.question-revealed .question-stage h1,
+    body.question-revealed .question-stage .story,
+    body.question-revealed .question-stage .buttons {
+      animation-play-state: running !important;
+    }
+
+    /* ================================================================
+       Tulipán secreto
+    ================================================================ */
+    .secret-tulip {
+      cursor: pointer;
+      outline: none;
+      overflow: visible;
+    }
+
+    .secret-tulip:focus-visible {
+      box-shadow:
+        0 0 0 5px rgba(255, 240, 173, 0.48),
+        0 16px 36px rgba(158, 88, 115, 0.17);
+    }
+
+    .secret-tulip.is-tapped {
+      animation:
+        tulipSecretTap 500ms cubic-bezier(.22, 1, .36, 1),
+        decorationFloat 3.4s ease-in-out infinite;
+    }
+
+    .secret-tulip.is-found {
+      box-shadow:
+        0 18px 42px rgba(158, 88, 115, 0.22),
+        0 0 0 9px rgba(255, 239, 159, 0.22);
+    }
+
+    @keyframes tulipSecretTap {
+      0% { transform: rotate(0deg) scale(1); }
+      32% { transform: rotate(-7deg) scale(0.94); }
+      68% { transform: rotate(7deg) scale(1.08); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+
+    .secret-toast {
+      position: fixed;
+      left: 50%;
+      bottom: max(20px, env(safe-area-inset-bottom));
+      z-index: 2147483645;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: min(90vw, 390px);
+      padding: 15px 17px;
+      border: 1px solid rgba(190, 105, 139, 0.19);
+      border-radius: 21px;
+      color: var(--ink);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255, 249, 220, 0.96),
+          rgba(252, 225, 236, 0.96)
+        );
+      box-shadow: 0 22px 52px rgba(108, 60, 80, 0.21);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      opacity: 0;
+      visibility: hidden;
+      transform: translate(-50%, 24px) scale(0.96);
+      transition:
+        opacity 500ms ease,
+        visibility 500ms ease,
+        transform 600ms cubic-bezier(.16, 1, .3, 1);
+      pointer-events: none;
+    }
+
+    .secret-toast.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, 0) scale(1);
+    }
+
+    .secret-toast > span {
+      font-size: 34px;
+    }
+
+    .secret-toast p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: left;
+    }
+
+    .secret-toast strong {
+      color: var(--pink-700);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 15px;
+      font-style: italic;
+    }
+
+    /* ================================================================
+       Mensajes especiales del botón No
+    ================================================================ */
+    .escape-note.is-changing {
+      animation: escapeMessagePop 600ms cubic-bezier(.16, 1, .3, 1);
+    }
+
+    @keyframes escapeMessagePop {
+      0% { opacity: 0.20; transform: translateY(5px) scale(0.98); }
+      65% { opacity: 0.92; transform: translateY(-2px) scale(1.015); }
+      100% { opacity: 0.72; transform: translateY(0) scale(1); }
+    }
+
+    /* ================================================================
+       Tarjeta del momento
+    ================================================================ */
+    .memory-card {
+      position: relative;
+      display: none;
+      max-width: 450px;
+      margin: 19px auto 0;
+      padding: 22px 20px;
+      overflow: hidden;
+      border: 1px solid rgba(190, 105, 139, 0.18);
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 92% 10%, rgba(255, 241, 170, 0.64), transparent 29%),
+        linear-gradient(
+          145deg,
+          rgba(255, 252, 236, 0.92),
+          rgba(250, 222, 233, 0.82)
+        );
+      box-shadow:
+        0 16px 38px rgba(119, 66, 89, 0.13),
+        inset 0 1px 0 rgba(255,255,255,0.90);
+      text-align: center;
+    }
+
+    .memory-card.show {
+      display: block;
+      animation: memoryCardIn 900ms cubic-bezier(.16, 1, .3, 1) both;
+    }
+
+    @keyframes memoryCardIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.95);
+        filter: blur(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    .memory-card::before,
+    .memory-card::after {
+      content: "✦";
+      position: absolute;
+      color: var(--yellow-300);
+      opacity: 0.66;
+    }
+
+    .memory-card::before {
+      left: 17px;
+      top: 14px;
+    }
+
+    .memory-card::after {
+      right: 18px;
+      bottom: 16px;
+    }
+
+    .memory-kicker {
+      color: var(--pink-700);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .memory-names {
+      margin: 9px 0 5px;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(29px, 7vw, 40px);
+      font-style: italic;
+    }
+
+    .memory-names span {
+      color: var(--pink-500);
+    }
+
+    .memory-date {
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .memory-card code {
+      display: block;
+      margin: 5px auto;
+      padding: 7px 10px;
+      border-radius: 10px;
+      color: #72515f;
+      background: rgba(255,255,255,0.55);
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 10px;
+      white-space: normal;
+    }
+
+    .save-memory {
+      min-width: 0;
+      min-height: 43px;
+      margin-top: 13px;
+      padding: 10px 17px;
+      color: var(--ink);
+      background:
+        linear-gradient(145deg, var(--yellow-100), var(--yellow-200));
+      border: 1px solid rgba(207, 170, 45, 0.20);
+      font-size: 12px;
+      box-shadow: 0 9px 20px rgba(154, 120, 35, 0.12);
+    }
+
+    .save-memory::before {
+      animation-duration: 4.2s;
+    }
+
+    .save-memory.saved {
+      background: linear-gradient(145deg, #fbe5ee, var(--pink-200));
+    }
+
+    @media (max-width: 470px) {
+      .question-prelude {
+        min-height: 72px;
+        margin-top: 3px;
+      }
+
+      .memory-card {
+        padding: 19px 15px;
+      }
+    }
+
+
+    /* ================================================================
+       Escena cinematográfica previa a la pregunta
+    ================================================================ */
+    .cinematic-prelude {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      display: grid;
+      place-items: center;
+      padding:
+        max(28px, env(safe-area-inset-top))
+        max(24px, env(safe-area-inset-right))
+        max(28px, env(safe-area-inset-bottom))
+        max(24px, env(safe-area-inset-left));
+      color: #171417;
+      background:
+        radial-gradient(circle at 50% 42%, #ffffff 0%, #fffefa 45%, #fffaf3 100%);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 1100ms cubic-bezier(.22, 1, .36, 1),
+        visibility 1100ms ease;
+    }
+
+    .cinematic-prelude.show {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .cinematic-prelude.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .cinematic-inner {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 3px;
+      justify-content: center;
+      align-items: center;
+      width: min(92vw, 900px);
+      min-height: 180px;
+      padding: 26px 18px 44px;
+      text-align: center;
+    }
+
+    .cinematic-line {
+      color: #171417;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 7vw, 72px);
+      font-weight: 500;
+      line-height: 1.22;
+      letter-spacing: -0.035em;
+      text-wrap: balance;
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity 720ms ease,
+        transform 820ms cubic-bezier(.22, 1, .36, 1),
+        filter 720ms ease;
+    }
+
+    .cinematic-line.changing {
+      opacity: 0;
+      transform: translateY(-10px);
+      filter: blur(4px);
+    }
+
+    .cinematic-caret {
+      width: 3px;
+      height: 1.05em;
+      margin-left: 8px;
+      border-radius: 999px;
+      background: #171417;
+      animation: cinematicCaretBlink 900ms steps(1) infinite;
+    }
+
+    .cinematic-caret.hidden {
+      opacity: 0;
+      animation: none;
+    }
+
+    .cinematic-accent {
+      position: absolute;
+      left: 50%;
+      bottom: 22px;
+      width: min(150px, 36vw);
+      height: 5px;
+      border-radius: 999px;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(248, 213, 226, 0),
+          rgba(248, 213, 226, 0.95) 22%,
+          rgba(255, 235, 159, 0.95) 78%,
+          rgba(255, 235, 159, 0)
+        );
+      transform: translateX(-50%) scaleX(0);
+      transform-origin: center;
+      transition: transform 900ms cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .cinematic-prelude.show .cinematic-accent {
+      transform: translateX(-50%) scaleX(1);
+    }
+
+    @keyframes cinematicCaretBlink {
+      0%, 48% { opacity: 1; }
+      49%, 100% { opacity: 0; }
+    }
+
+    /*
+      El preámbulo anterior dentro de la tarjeta se conserva como respaldo
+      semántico, pero ya no ocupa espacio ni interfiere con la escena.
+    */
+    .question-prelude {
+      display: none !important;
+    }
+
+    @media (max-width: 470px) {
+      .cinematic-inner {
+        min-height: 150px;
+        padding-inline: 8px;
+      }
+
+      .cinematic-line {
+        font-size: clamp(31px, 9.5vw, 48px);
+        line-height: 1.28;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cinematic-prelude,
+      .cinematic-line,
+      .cinematic-accent {
+        transition-duration: 650ms !important;
+      }
+
+      .cinematic-caret {
+        animation-duration: 1000ms !important;
+      }
+    }
+
+
+    /* ================================================================
+       Nuestra playlist de Spotify
+    ================================================================ */
+    .music-dock {
+      z-index: 2000000000;
+    }
+
+    .music-toggle {
+      gap: 10px;
+      min-height: 46px;
+      padding: 10px 15px 10px 10px;
+    }
+
+    .playlist-disc {
+      position: relative;
+      display: inline-grid;
+      grid-template-columns: repeat(3, 3px);
+      align-items: end;
+      justify-content: center;
+      gap: 2px;
+      width: 28px;
+      height: 28px;
+      padding: 6px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #fff8cf 0 12%, #8b4c67 14% 20%, transparent 22%),
+        conic-gradient(from 20deg, #f8d5e2, #fff0ad, #efb8cb, #f8d5e2);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.75);
+      animation: playlistDiscFloat 2.8s ease-in-out infinite;
+    }
+
+    .playlist-disc i {
+      width: 3px;
+      border-radius: 999px;
+      background: rgba(87,55,68,0.75);
+      animation: playlistBars 850ms ease-in-out infinite alternate paused;
+    }
+
+    .playlist-disc i:nth-child(1) { height: 6px; }
+    .playlist-disc i:nth-child(2) { height: 11px; animation-delay: -240ms; }
+    .playlist-disc i:nth-child(3) { height: 8px; animation-delay: -420ms; }
+
+    .music-dock.is-open .playlist-disc i {
+      animation-play-state: running;
+    }
+
+    @keyframes playlistDiscFloat {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-2px) rotate(3deg); }
+    }
+
+    @keyframes playlistBars {
+      from { transform: scaleY(0.55); }
+      to { transform: scaleY(1.25); }
+    }
+
+    .spotify-panel {
+      width: min(92vw, 430px);
+      max-height: min(84dvh, 650px);
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.88);
+      background:
+        radial-gradient(circle at 95% 4%, rgba(255,239,159,0.44), transparent 30%),
+        linear-gradient(145deg, rgba(255,253,244,0.97), rgba(251,226,236,0.97));
+      box-shadow: 0 26px 70px rgba(99,52,73,0.22);
+    }
+
+    .playlist-caption {
+      margin: 4px 3px 13px;
+      color: var(--muted);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 14px;
+      font-style: italic;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    .spotify-frame-wrap {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(181,100,132,0.16);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.72);
+      box-shadow: 0 14px 34px rgba(102,58,77,0.13);
+    }
+
+    .spotify-frame-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      background: linear-gradient(135deg, var(--pink-100), var(--yellow-100));
+    }
+
+    .spotify-frame-wrap iframe {
+      display: block;
+      width: 100%;
+      border: 0;
+      border-radius: 17px;
+    }
+
+    .spotify-external {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 42px;
+      margin-top: 11px;
+      padding: 10px 14px;
+      border: 1px solid rgba(181,100,132,0.16);
+      border-radius: 999px;
+      color: var(--pink-700);
+      background: rgba(255,255,255,0.62);
+      font-size: 11px;
+      font-weight: 850;
+      text-decoration: none;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .spotify-external:hover {
+      transform: translateY(-2px);
+      background: rgba(255,248,218,0.9);
+    }
+
+    /* ================================================================
+       Capítulos de la experiencia
+    ================================================================ */
+    .chapter-progress {
+      position: fixed;
+      left: 50%;
+      bottom: max(14px, env(safe-area-inset-bottom));
+      z-index: 1999999999;
+      width: min(92vw, 460px);
+      opacity: 1;
+      transform: translateX(-50%);
+      transition: opacity 500ms ease, transform 500ms ease;
+      pointer-events: none;
+    }
+
+    body.intro-pending .chapter-progress {
+      opacity: 0;
+      transform: translate(-50%, 12px);
+    }
+
+    .chapter-progress ol {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: start;
+      margin: 0;
+      padding: 10px 15px 9px;
+      border: 1px solid rgba(255,255,255,0.72);
+      border-radius: 22px;
+      list-style: none;
+      background: rgba(255,250,244,0.68);
+      box-shadow: 0 12px 32px rgba(97,54,73,0.10);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .chapter-progress ol::before {
+      content: "";
+      position: absolute;
+      left: 12.5%;
+      right: 12.5%;
+      top: 24px;
+      height: 2px;
+      border-radius: 999px;
+      background: rgba(199,109,147,0.16);
+    }
+
+    .chapter-step {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      justify-items: center;
+      gap: 4px;
+      color: rgba(87,55,68,0.44);
+      transition: color 500ms ease, transform 500ms cubic-bezier(.16,1,.3,1);
+    }
+
+    .chapter-step span {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border: 2px solid rgba(199,109,147,0.18);
+      border-radius: 50%;
+      background: rgba(255,253,246,0.96);
+      font-size: 10px;
+      font-weight: 900;
+      transition: background 500ms ease, border-color 500ms ease, box-shadow 500ms ease;
+    }
+
+    .chapter-step small {
+      font-size: 9px;
+      font-weight: 850;
+      letter-spacing: 0.04em;
+    }
+
+    .chapter-step.is-complete span {
+      color: var(--pink-700);
+      border-color: rgba(199,109,147,0.34);
+      background: var(--pink-100);
+    }
+
+    .chapter-step.is-active {
+      color: var(--pink-700);
+      transform: translateY(-2px);
+    }
+
+    .chapter-step.is-active span {
+      color: var(--ink);
+      border-color: rgba(226,174,84,0.38);
+      background: var(--yellow-100);
+      box-shadow: 0 0 0 6px rgba(255,239,159,0.16);
+    }
+
+    body.accepted-story .chapter-progress ol {
+      background: rgba(255,248,218,0.78);
+    }
+
+    /* Acciones finales */
+    .memory-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 13px;
+    }
+
+    .memory-actions .save-memory,
+    .memory-actions .open-playlist {
+      min-width: 0;
+      min-height: 43px;
+      margin-top: 0;
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+
+    .open-playlist {
+      color: var(--pink-700);
+      background: linear-gradient(145deg, #fde8ef, var(--pink-200));
+      border: 1px solid rgba(181,100,132,0.18);
+      box-shadow: 0 9px 20px rgba(130,74,96,0.12);
+    }
+
+    @media (max-width: 520px) {
+      .music-dock {
+        top: auto;
+        right: max(12px, env(safe-area-inset-right));
+        bottom: calc(max(14px, env(safe-area-inset-bottom)) + 78px);
+      }
+
+      .spotify-panel {
+        position: fixed;
+        left: 50%;
+        right: auto;
+        top: auto;
+        bottom: calc(max(10px, env(safe-area-inset-bottom)) + 66px);
+        width: min(94vw, 430px);
+        max-height: calc(100dvh - 95px);
+        transform: translate(-50%, 16px) scale(0.97);
+      }
+
+      .spotify-panel.is-open {
+        transform: translate(-50%, 0) scale(1);
+      }
+
+      .chapter-progress {
+        width: min(94vw, 430px);
+      }
+
+      .chapter-progress ol {
+        padding-inline: 9px;
+      }
+
+      .chapter-step small {
+        font-size: 8px;
+      }
+    }
+
   </style>
 </head>
 
@@ -1735,6 +2504,19 @@
     </div>
   </section>
 
+  <section
+    class="cinematic-prelude"
+    id="cinematicPrelude"
+    aria-live="polite"
+    aria-hidden="true"
+  >
+    <div class="cinematic-inner">
+      <div class="cinematic-line" id="cinematicLine"></div>
+      <span class="cinematic-caret" id="cinematicCaret" aria-hidden="true"></span>
+      <div class="cinematic-accent" aria-hidden="true"></div>
+    </div>
+  </section>
+
   <div class="music-dock" id="musicDock">
     <button
       class="music-toggle"
@@ -1742,41 +2524,37 @@
       type="button"
       aria-expanded="false"
       aria-controls="musicPanel"
-      aria-label="Elegir canción"
+      aria-label="Abrir nuestra playlist"
     >
-      <span class="music-icon" aria-hidden="true">♫</span>
-      <span class="music-label">Canción</span>
+      <span class="playlist-disc" aria-hidden="true">
+        <i></i><i></i><i></i>
+      </span>
+      <span class="music-label">Nuestra playlist</span>
     </button>
 
-    <section class="music-panel" id="musicPanel" aria-label="Selector de canción">
+    <section class="music-panel spotify-panel" id="musicPanel" aria-label="Nuestra playlist de Spotify">
       <div class="music-panel-heading">
-        <span>Una canción para este momento</span>
-        <button class="music-close" id="musicClose" type="button" aria-label="Cerrar selector">×</button>
+        <span>La banda sonora de esta historia</span>
+        <button class="music-close" id="musicClose" type="button" aria-label="Cerrar playlist">×</button>
       </div>
 
-      <button class="track-option is-selected" type="button" data-track="como">
-        <span class="track-flower" aria-hidden="true">🌷</span>
-        <span><strong>Como Queremos</strong><small>Siddhartha</small></span>
-        <span class="track-play" aria-hidden="true">▶</span>
-      </button>
+      <p class="playlist-caption">
+        No hace falta elegir una sola canción. Esta es mi playlist de amor para ti, Luz. 💛
+      </p>
 
-      <button class="track-option" type="button" data-track="brillo">
-        <span class="track-flower" aria-hidden="true">🌼</span>
-        <span><strong>Brillo Mío</strong><small>Caloncho</small></span>
-        <span class="track-play" aria-hidden="true">▶</span>
-      </button>
-
-      <button class="track-option" type="button" data-track="disfruto">
-        <span class="track-flower" aria-hidden="true">🌸</span>
-        <span><strong>Disfruto</strong><small>Carla Morrison</small></span>
-        <span class="track-play" aria-hidden="true">▶</span>
-      </button>
-
-      <button class="track-option" type="button" data-track="quererme">
-        <span class="track-flower" aria-hidden="true">🌺</span>
-        <span><strong>Tú sí sabes quererme</strong><small>Natalia Lafourcade</small></span>
-        <span class="track-play" aria-hidden="true">▶</span>
-      </button>
+      <div class="spotify-frame-wrap">
+        <iframe
+          data-testid="embed-iframe"
+          src="https://open.spotify.com/embed/playlist/29maX1xVL24iS6eXhWQGX3?utm_source=generator&si=13bee5bc6a784c47"
+          width="100%"
+          height="352"
+          frameborder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+          title="Playlist de amor de Raúl para Luz"
+        ></iframe>
+      </div>
 
       <div class="sfx-row">
         <span>
@@ -1791,34 +2569,31 @@
         >Activados</button>
       </div>
 
-      <div class="music-now-playing">
-        <span class="equalizer" id="equalizer" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span id="musicStatus">Elige una canción para comenzar</span>
-      </div>
-
-      <div class="music-actions">
-        <button class="music-stop" id="musicStop" type="button" disabled>Pausar</button>
-        <a
-          class="music-external"
-          id="musicExternal"
-          href="https://www.youtube.com/watch?v=uwMmM4yimnk"
-          target="_blank"
-          rel="noopener noreferrer"
-        >Abrir en YouTube ↗</a>
-      </div>
-
-      <div class="youtube-audio" aria-hidden="true">
-        <iframe
-          id="musicPlayer"
-          title="Reproductor de música"
-          width="1"
-          height="1"
-          allow="autoplay; encrypted-media"
-          referrerpolicy="strict-origin-when-cross-origin"
-        ></iframe>
-      </div>
+      <a
+        class="spotify-external"
+        href="https://open.spotify.com/playlist/29maX1xVL24iS6eXhWQGX3?si=13bee5bc6a784c47"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Abrir la playlist en Spotify ↗</a>
     </section>
   </div>
+
+  <nav class="chapter-progress" id="chapterProgress" aria-label="Capítulos de esta historia">
+    <ol>
+      <li class="chapter-step is-active" data-chapter="0">
+        <span>1</span><small>Carta</small>
+      </li>
+      <li class="chapter-step" data-chapter="1">
+        <span>2</span><small>Respira</small>
+      </li>
+      <li class="chapter-step" data-chapter="2">
+        <span>3</span><small>Pregunta</small>
+      </li>
+      <li class="chapter-step" data-chapter="3">
+        <span>4</span><small>Nosotros</small>
+      </li>
+    </ol>
+  </nav>
   <div class="ambient" aria-hidden="true">
     <div class="blob blob--one"></div>
     <div class="blob blob--two"></div>
@@ -1832,17 +2607,37 @@
   <div class="success-halo" id="successHalo" aria-hidden="true"></div>
   <div class="celebration" id="celebration" aria-hidden="true"></div>
 
+  <div class="secret-toast" id="secretToast" role="status" aria-live="polite">
+    <span>🌷</span>
+    <p>
+      Encontraste el mensaje secreto:<br />
+      <strong>sí, me gustas muchísimo, Luz.</strong>
+    </p>
+  </div>
+
   <div class="page-shell">
     <main class="card" id="card">
-      <div class="top-decoration" aria-hidden="true">
+      <div
+        class="top-decoration secret-tulip"
+        id="secretTulip"
+        role="button"
+        tabindex="0"
+        aria-label="Tulipán con un mensaje secreto"
+      >
         <span>🌷</span>
       </div>
 
-      <div class="eyebrow">Una pregunta muy, muy, muy seria… <span>(bueno, más o menos)</span></div>
+      <div class="question-prelude" id="questionPrelude" aria-live="polite">
+        <span class="prelude-text" id="preludeText"></span>
+        <span class="typing-caret" aria-hidden="true"></span>
+      </div>
 
-      <h1>
-        <span class="name">Luz</span>, ¿puedo ser tu novio?
-      </h1>
+      <section class="question-stage" id="questionStage">
+        <div class="eyebrow">Una pregunta muy, muy, muy seria… <span>(bueno, más o menos)</span></div>
+
+        <h1>
+          <span class="name">Luz</span>, ¿puedo ser tu novio?
+        </h1>
 
       <p class="story" id="story">
         Una noche, sin previo aviso, simplemente apareciste en mi cabeza.
@@ -1869,14 +2664,32 @@
         </button>
       </div>
 
-      <div class="escape-note" id="escapeNote" aria-live="polite">
-        Diagnóstico técnico: el botón «No» se puso nervioso y está huyendo.
-        Yo no programé eso… creo.
-      </div>
+        <div class="escape-note" id="escapeNote" aria-live="polite">
+          Diagnóstico técnico: el botón «No» se puso nervioso y está huyendo.
+          Yo no programé eso… creo.
+        </div>
+      </section>
 
       <div class="success-message" id="successMessage" role="status" aria-live="polite">
         Entonces déjame intentar hacerte muy feliz, Luz 💛🌷
       </div>
+
+      <section class="memory-card" id="memoryCard" aria-live="polite">
+        <div class="memory-kicker">Nuestra primera versión oficial</div>
+        <div class="memory-names">Luz <span>+</span> Raúl</div>
+        <div class="memory-date" id="memoryDate"></div>
+        <code>Estado del sistema: enamoramiento confirmado ✓</code>
+        <code>Deploy exitoso: nueva relación en producción 💛</code>
+
+        <div class="memory-actions">
+          <button class="save-memory" id="saveMemoryBtn" type="button">
+            Guardar este momento 📸
+          </button>
+          <button class="open-playlist" id="openPlaylistBtn" type="button">
+            Nuestra playlist ♫
+          </button>
+        </div>
+      </section>
 
       <div class="postscript" id="postscript">
         <strong>P. D.</strong> Prometo no hacer que todos nuestros desacuerdos
@@ -1895,23 +2708,30 @@
 
     const introOverlay = document.getElementById("introOverlay");
     const openLetterBtn = document.getElementById("openLetterBtn");
+    const cinematicPrelude = document.getElementById("cinematicPrelude");
+    const cinematicLine = document.getElementById("cinematicLine");
+    const cinematicCaret = document.getElementById("cinematicCaret");
     const musicDock = document.getElementById("musicDock");
     const musicToggle = document.getElementById("musicToggle");
     const musicPanel = document.getElementById("musicPanel");
     const musicClose = document.getElementById("musicClose");
-    const musicStop = document.getElementById("musicStop");
     const sfxToggle = document.getElementById("sfxToggle");
-    const musicStatus = document.getElementById("musicStatus");
-    const musicExternal = document.getElementById("musicExternal");
-    const musicPlayer = document.getElementById("musicPlayer");
-    const trackOptions = Array.from(document.querySelectorAll(".track-option"));
+    const chapterSteps = Array.from(document.querySelectorAll(".chapter-step"));
     const card = document.getElementById("card");
+    const secretTulip = document.getElementById("secretTulip");
+    const secretToast = document.getElementById("secretToast");
+    const questionPrelude = document.getElementById("questionPrelude");
+    const preludeText = document.getElementById("preludeText");
     const story = document.getElementById("story");
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const buttonArea = document.getElementById("buttonArea");
     const escapeNote = document.getElementById("escapeNote");
     const successMessage = document.getElementById("successMessage");
+    const memoryCard = document.getElementById("memoryCard");
+    const memoryDate = document.getElementById("memoryDate");
+    const saveMemoryBtn = document.getElementById("saveMemoryBtn");
+    const openPlaylistBtn = document.getElementById("openPlaylistBtn");
     const postscript = document.getElementById("postscript");
     const successHalo = document.getElementById("successHalo");
     const celebration = document.getElementById("celebration");
@@ -1929,11 +2749,13 @@
     let lastNoPosition = null;
     let accepted = false;
     let letterOpened = false;
-    let musicPlaying = false;
-    let selectedTrack = "como";
     let sfxEnabled = true;
     let sfxContext = null;
     let lastWhooshAt = 0;
+    let questionSequenceStarted = false;
+    let tulipTapCount = 0;
+    let secretToastTimer = null;
+    let acceptedAt = null;
 
     const noLabels = [
       "No 🙈",
@@ -1946,9 +2768,83 @@
     ];
 
 
+
+    function wait(milliseconds) {
+      return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+    }
+
+    async function typeCinematicText(text, speed = 96) {
+      cinematicLine.textContent = "";
+      cinematicLine.classList.remove("changing");
+      cinematicCaret.classList.remove("hidden");
+
+      for (const character of text) {
+        cinematicLine.textContent += character;
+
+        let delay = speed;
+        if (character === "," || character === ";") delay = speed * 2.1;
+        if (character === "." || character === "…" || character === "?") {
+          delay = speed * 3.0;
+        }
+
+        await wait(delay);
+      }
+    }
+
+    async function changeCinematicText(text) {
+      cinematicLine.classList.add("changing");
+      cinematicCaret.classList.add("hidden");
+
+      await wait(760);
+
+      cinematicLine.textContent = "";
+      cinematicLine.classList.remove("changing");
+      cinematicCaret.classList.remove("hidden");
+
+      await wait(220);
+      await typeCinematicText(text, 88);
+    }
+
+    async function startQuestionPrelude() {
+      if (questionSequenceStarted) return;
+      questionSequenceStarted = true;
+      setChapter(1);
+
+      cinematicPrelude.setAttribute("aria-hidden", "false");
+      cinematicPrelude.classList.remove("fade-out");
+      cinematicPrelude.classList.add("show");
+
+      // Entrada limpia antes de comenzar a escribir.
+      await wait(900);
+
+      await typeCinematicText("Ok… respira, Raúl.", 105);
+      await wait(1650);
+
+      await changeCinematicText("Luz, tengo que preguntarte algo.");
+      await wait(1850);
+
+      cinematicCaret.classList.add("hidden");
+      cinematicLine.classList.add("changing");
+      await wait(760);
+
+      // La pregunta aparece detrás mientras el fondo blanco se desvanece.
+      document.body.classList.add("question-revealed");
+      setChapter(2);
+      cinematicPrelude.classList.add("fade-out");
+      cinematicPrelude.classList.remove("show");
+
+      await wait(1150);
+      cinematicPrelude.setAttribute("aria-hidden", "true");
+
+      if (navigator.vibrate) {
+        navigator.vibrate(24);
+      }
+    }
+
     function openLetter() {
       if (letterOpened) return;
       letterOpened = true;
+      setChapter(0);
       playPaperSound();
 
       introOverlay.classList.add("is-opening");
@@ -1962,7 +2858,7 @@
         introOverlay.classList.add("is-lifting");
       }, reduceMotion ? 120 : 720);
 
-      // 2) Sale la carta; después se revela la página y arrancan sus animaciones.
+      // 2) Sale la carta y se desvanece por completo.
       setTimeout(() => {
         document.body.classList.remove("intro-pending");
         document.body.classList.add("page-revealed");
@@ -1971,84 +2867,31 @@
 
       setTimeout(() => {
         introOverlay.setAttribute("aria-hidden", "true");
-      }, reduceMotion ? 900 : 3400);
+      }, reduceMotion ? 1100 : 3400);
+
+      /*
+        La escena de texto comienza después de que la carta ya no tapa
+        absolutamente nada. Así nunca se pierde la primera frase.
+      */
+      setTimeout(() => {
+        startQuestionPrelude();
+      }, reduceMotion ? 1250 : 3450);
     }
 
-    const tracks = {
-      como: {
-        title: "Como Queremos",
-        artist: "Siddhartha",
-        videoId: "uwMmM4yimnk",
-        url: "https://www.youtube.com/watch?v=uwMmM4yimnk"
-      },
-      brillo: {
-        title: "Brillo Mío",
-        artist: "Caloncho",
-        videoId: "OydOMK1Zo2c",
-        url: "https://www.youtube.com/watch?v=OydOMK1Zo2c"
-      },
-      disfruto: {
-        title: "Disfruto",
-        artist: "Carla Morrison",
-        videoId: "_ruEj-XK1lA",
-        url: "https://www.youtube.com/watch?v=_ruEj-XK1lA"
-      },
-      quererme: {
-        title: "Tú sí sabes quererme",
-        artist: "Natalia Lafourcade",
-        videoId: "ABLT6hdgEek",
-        url: "https://www.youtube.com/watch?v=ABLT6hdgEek"
-      }
-    };
+    function setChapter(index) {
+      chapterSteps.forEach((step, stepIndex) => {
+        step.classList.toggle("is-active", stepIndex === index);
+        step.classList.toggle("is-complete", stepIndex < index);
+      });
+    }
 
     function setMusicPanel(open) {
       musicPanel.classList.toggle("is-open", open);
+      musicDock.classList.toggle("is-open", open);
       musicToggle.setAttribute("aria-expanded", String(open));
+      musicToggle.querySelector(".music-label").textContent =
+        open ? "Playlist abierta" : "Nuestra playlist";
     }
-
-    function updateTrackSelection(trackKey) {
-      selectedTrack = trackKey;
-      const track = tracks[trackKey];
-
-      trackOptions.forEach((option) => {
-        option.classList.toggle("is-selected", option.dataset.track === trackKey);
-      });
-
-      musicExternal.href = track.url;
-    }
-
-    function playTrack(trackKey = selectedTrack) {
-      updateTrackSelection(trackKey);
-      const track = tracks[trackKey];
-
-      trackOptions.forEach((option) => {
-        option.classList.toggle("is-playing", option.dataset.track === trackKey);
-      });
-
-      // Se crea la reproducción únicamente después de un toque explícito.
-      musicPlayer.src =
-        `https://www.youtube-nocookie.com/embed/${track.videoId}` +
-        `?autoplay=1&controls=0&loop=1&playlist=${track.videoId}` +
-        `&playsinline=1&rel=0&modestbranding=1`;
-
-      musicPlaying = true;
-      musicDock.classList.add("is-playing");
-      musicStop.disabled = false;
-      musicStatus.textContent = `Sonando: ${track.title} — ${track.artist}`;
-      musicToggle.querySelector(".music-label").textContent = "Sonando";
-      setMusicPanel(true);
-    }
-
-    function stopMusic() {
-      musicPlayer.src = "about:blank";
-      musicPlaying = false;
-      musicDock.classList.remove("is-playing");
-      musicStop.disabled = true;
-      trackOptions.forEach((option) => option.classList.remove("is-playing"));
-      musicStatus.textContent = "Música en pausa";
-      musicToggle.querySelector(".music-label").textContent = "Canción";
-    }
-
 
     function getSfxContext() {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -2264,6 +3107,78 @@
     }
 
 
+
+    function playSecretChime() {
+      [
+        [659.25, 0],
+        [783.99, 0.10],
+        [987.77, 0.22]
+      ].forEach(([frequency, delay]) => {
+        playTone({
+          frequency,
+          endFrequency: frequency * 1.012,
+          duration: 0.34,
+          volume: 0.011,
+          delay,
+          type: "sine"
+        });
+      });
+    }
+
+    function revealTulipSecret() {
+      window.clearTimeout(secretToastTimer);
+      secretTulip.classList.add("is-found");
+      secretToast.classList.add("show");
+      playSecretChime();
+
+      secretToastTimer = window.setTimeout(() => {
+        secretToast.classList.remove("show");
+      }, 4800);
+    }
+
+    function tapSecretTulip() {
+      tulipTapCount += 1;
+
+      secretTulip.classList.remove("is-tapped");
+      void secretTulip.offsetWidth;
+      secretTulip.classList.add("is-tapped");
+
+      playTone({
+        frequency: 520 + tulipTapCount * 70,
+        endFrequency: 600 + tulipTapCount * 80,
+        duration: 0.13,
+        volume: 0.008,
+        type: "sine"
+      });
+
+      if (tulipTapCount >= 3) {
+        tulipTapCount = 0;
+        revealTulipSecret();
+      }
+    }
+
+    function updateEscapeMessage() {
+      let text =
+        "Diagnóstico técnico: el botón «No» se puso nervioso y está huyendo. " +
+        "Yo no programé eso… creo.";
+
+      if (noMoveCount >= 3 && noMoveCount < 6) {
+        text =
+          "Luz, creo que ese botón está intentando sabotear mi momento romántico 😔";
+      } else if (noMoveCount >= 6 && noMoveCount < 9) {
+        text =
+          "En mi defensa, el botón de «Sí» se ve mucho más bonito 💛";
+      } else if (noMoveCount >= 9) {
+        text =
+          "Reporte final: el botón «No» agotó todos sus argumentos. El de «Sí» sigue disponible 🌷";
+      }
+
+      escapeNote.textContent = text;
+      escapeNote.classList.remove("is-changing");
+      void escapeNote.offsetWidth;
+      escapeNote.classList.add("is-changing");
+    }
+
     function chooseFirstEscapePosition(pointer, startingRect) {
       const viewport = getViewport();
       const margin = 24;
@@ -2471,6 +3386,7 @@
       noMoveCount += 1;
 
       noBtn.textContent = noLabels[noMoveCount % noLabels.length];
+      updateEscapeMessage();
       escapeNote.classList.add("show");
 
       const applyTarget = () => {
@@ -2655,9 +3571,191 @@
       }
     }
 
+
+    function formatAcceptanceDate(date) {
+      return new Intl.DateTimeFormat("es-MX", {
+        dateStyle: "long",
+        timeStyle: "short"
+      }).format(date);
+    }
+
+    function roundedRect(context, x, y, width, height, radius) {
+      const r = Math.min(radius, width / 2, height / 2);
+
+      context.beginPath();
+      context.moveTo(x + r, y);
+      context.arcTo(x + width, y, x + width, y + height, r);
+      context.arcTo(x + width, y + height, x, y + height, r);
+      context.arcTo(x, y + height, x, y, r);
+      context.arcTo(x, y, x + width, y, r);
+      context.closePath();
+    }
+
+    function wrapCanvasText(context, text, maxWidth) {
+      const words = text.split(" ");
+      const lines = [];
+      let line = "";
+
+      words.forEach((word) => {
+        const testLine = line ? `${line} ${word}` : word;
+
+        if (context.measureText(testLine).width > maxWidth && line) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = testLine;
+        }
+      });
+
+      if (line) lines.push(line);
+      return lines;
+    }
+
+    async function saveMemoryImage() {
+      if (!acceptedAt) return;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = 1200;
+      canvas.height = 1500;
+      const context = canvas.getContext("2d");
+
+      const gradient = context.createLinearGradient(0, 0, 1200, 1500);
+      gradient.addColorStop(0, "#fffdf3");
+      gradient.addColorStop(0.48, "#fdebf2");
+      gradient.addColorStop(1, "#f8d6e2");
+      context.fillStyle = gradient;
+      context.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Flores abstractas pastel.
+      const flowers = [
+        [115, 150, "#f1c3d3"],
+        [1060, 170, "#fff0ad"],
+        [1045, 1320, "#f9dce7"],
+        [135, 1345, "#fff0ad"]
+      ];
+
+      flowers.forEach(([cx, cy, color]) => {
+        context.save();
+        context.translate(cx, cy);
+        context.fillStyle = color;
+
+        for (let i = 0; i < 6; i += 1) {
+          context.rotate(Math.PI / 3);
+          context.beginPath();
+          context.ellipse(0, -42, 24, 50, 0, 0, Math.PI * 2);
+          context.fill();
+        }
+
+        context.fillStyle = "#efd77e";
+        context.beginPath();
+        context.arc(0, 0, 25, 0, Math.PI * 2);
+        context.fill();
+        context.restore();
+      });
+
+      context.save();
+      context.shadowColor = "rgba(104, 57, 77, 0.18)";
+      context.shadowBlur = 48;
+      context.shadowOffsetY = 20;
+      roundedRect(context, 110, 205, 980, 1090, 55);
+      context.fillStyle = "rgba(255, 252, 244, 0.90)";
+      context.fill();
+      context.restore();
+
+      context.textAlign = "center";
+      context.fillStyle = "#845269";
+      context.font = "700 27px Georgia, serif";
+      context.fillText("NUESTRA PRIMERA VERSIÓN OFICIAL", 600, 350);
+
+      context.fillStyle = "#573744";
+      context.font = "italic 86px Georgia, serif";
+      context.fillText("Luz + Raúl", 600, 505);
+
+      context.fillStyle = "#c97f9d";
+      context.font = "44px Georgia, serif";
+      context.fillText("♥", 600, 585);
+
+      context.fillStyle = "#80616d";
+      context.font = "600 27px system-ui, sans-serif";
+      context.fillText(formatAcceptanceDate(acceptedAt), 600, 660);
+
+      context.fillStyle = "rgba(255,255,255,0.62)";
+      roundedRect(context, 210, 735, 780, 86, 22);
+      context.fill();
+
+      context.fillStyle = "#72515f";
+      context.font = "25px ui-monospace, monospace";
+      context.fillText("Estado del sistema: enamoramiento confirmado ✓", 600, 788);
+
+      context.fillStyle = "rgba(255,255,255,0.62)";
+      roundedRect(context, 210, 846, 780, 86, 22);
+      context.fill();
+
+      context.fillStyle = "#72515f";
+      context.font = "25px ui-monospace, monospace";
+      context.fillText("Deploy exitoso: nueva relación en producción", 600, 899);
+
+      context.fillStyle = "#71505e";
+      context.font = "italic 31px Georgia, serif";
+
+      const phrase =
+        "Gracias por dejarme intentarlo. Prometo cuidar esta historia con paciencia, cariño y mucha intención.";
+      const lines = wrapCanvasText(context, phrase, 750);
+
+      lines.forEach((line, index) => {
+        context.fillText(line, 600, 1005 + index * 47);
+      });
+
+      context.fillStyle = "#845269";
+      context.font = "700 25px Georgia, serif";
+      context.fillText("Compilado con cariño por tu programador favorito.", 600, 1210);
+
+      const blob = await new Promise((resolve) => {
+        canvas.toBlob(resolve, "image/png", 0.96);
+      });
+
+      if (!blob) return;
+
+      const filename = `Luz-y-Raul-${acceptedAt.toISOString().slice(0, 10)}.png`;
+      const file = new File([blob], filename, { type: "image/png" });
+
+      if (
+        navigator.share &&
+        navigator.canShare &&
+        navigator.canShare({ files: [file] })
+      ) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: "Luz + Raúl",
+            text: "Nuestra primera versión oficial 💛"
+          });
+        } catch (error) {
+          if (error && error.name !== "AbortError") {
+            console.warn("No se pudo compartir directamente:", error);
+          }
+        }
+      } else {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+      }
+
+      saveMemoryBtn.textContent = "Recuerdo guardado 💛";
+      saveMemoryBtn.classList.add("saved");
+      playSecretChime();
+    }
+
     function acceptProposal(event) {
       if (accepted) return;
       accepted = true;
+      document.body.classList.add("accepted-story");
+      setChapter(3);
       playYesChime();
 
       // Con teclado no existe pointerdown, así que creamos la onda aquí.
@@ -2688,11 +3786,18 @@
         "acompañarte en las difíciles y seguir haciendo que tus días tengan " +
         "un poquito más de <em>Luz</em>. 💛";
 
+      acceptedAt = new Date();
+      memoryDate.textContent = formatAcceptanceDate(acceptedAt);
+
       successMessage.classList.add("show");
 
       setTimeout(() => {
+        memoryCard.classList.add("show");
+      }, reduceMotion ? 20 : 650);
+
+      setTimeout(() => {
         postscript.classList.add("show");
-      }, reduceMotion ? 10 : 950);
+      }, reduceMotion ? 40 : 1350);
 
       launchCelebration();
 
@@ -2703,13 +3808,32 @@
 
     openLetterBtn.addEventListener("click", openLetter);
 
+    secretTulip.addEventListener("click", tapSecretTulip);
+    secretTulip.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        tapSecretTulip();
+      }
+    });
+
+    saveMemoryBtn.addEventListener("click", saveMemoryImage);
+
     musicToggle.addEventListener("click", () => {
       const willOpen = !musicPanel.classList.contains("is-open");
       setMusicPanel(willOpen);
+      if (willOpen) {
+        playTone({
+          frequency: 587.33,
+          endFrequency: 783.99,
+          duration: 0.20,
+          volume: 0.008,
+          type: "sine"
+        });
+      }
     });
 
     musicClose.addEventListener("click", () => setMusicPanel(false));
-    musicStop.addEventListener("click", stopMusic);
+    openPlaylistBtn.addEventListener("click", () => setMusicPanel(true));
 
     sfxToggle.addEventListener("click", () => {
       setSfxEnabled(!sfxEnabled);
@@ -2723,10 +3847,6 @@
       },
       { once: true, passive: true }
     );
-
-    trackOptions.forEach((option) => {
-      option.addEventListener("click", () => playTrack(option.dataset.track));
-    });
 
     document.addEventListener("pointerdown", (event) => {
       if (!musicDock.contains(event.target)) {
@@ -2869,7 +3989,7 @@
           clientX: rect.left + rect.width / 2,
           clientY: rect.top + rect.height / 2
         });
-      }, 3900);
+      }, 6900);
     }
   </script>
 </body>
