@@ -584,7 +584,7 @@
     }
 
     #noBtn {
-      z-index: 99999;
+      z-index: 2147483647;
       color: #774156;
       background:
         radial-gradient(circle at 30% 20%, rgba(255,255,255,0.84), transparent 28%),
@@ -874,18 +874,18 @@
         <span>🌷</span>
       </div>
 
-      <div class="eyebrow">Una pregunta muy muy muy seria seriosa para ti Luz</div>
+      <div class="eyebrow">Una pregunta muy seria para Lu</div>
 
       <h1>
-        <span class="name">Luz</span>, ¿puedo ser tu novio?
+        <span class="name">Lu</span>, ¿puedo ser tu novio?
       </h1>
 
       <p class="story" id="story">
         Una noche, sin previo aviso, simplemente apareciste en mi cabeza.
         Desde entonces te quedaste dando vueltas por ahí, mientras yo andaba
-        siempre un poquito de <em>delulu</em>
+        siempre un poquito de <em>delulu</em>… o quizá ya medio loquito, jajaja.
         Y después de pensarlo tanto, entendí que no quería seguir guardándome
-        las ganas de preguntarte algo bonito. Me encantas así de simple.
+        las ganas de preguntarte algo bonito.
       </p>
 
       <div class="buttons" id="buttonArea">
@@ -903,8 +903,8 @@
       </div>
 
       <div class="signature">
-        De tu programador favorito, Raúl.
-        <small>Andale mantenme porfis uwu</small>
+        De tu programador favorito (también xalapeño), Raúl.
+        <small>Compilado con cariño y un poquito de delulu</small>
       </div>
     </main>
   </div>
@@ -1084,10 +1084,21 @@
       createNoPlaceholder();
 
       if (!noIsFloating) {
+        /*
+          La tarjeta usa transformaciones 3D y overflow: hidden.
+          Un elemento fixed dentro de un ancestro transformado deja de tomar
+          el viewport como referencia y puede quedar recortado. Al mover el
+          botón directamente al body, siempre permanece visible.
+        */
+        document.body.appendChild(noBtn);
+
         noBtn.style.position = "fixed";
         noBtn.style.margin = "0";
         noBtn.style.right = "auto";
         noBtn.style.bottom = "auto";
+        noBtn.style.maxWidth = "calc(100vw - 36px)";
+        noBtn.style.visibility = "visible";
+        noBtn.style.opacity = "1";
         noIsFloating = true;
       }
 
@@ -1130,6 +1141,8 @@
 
       noBtn.style.left = `${Math.round(x)}px`;
       noBtn.style.top = `${Math.round(y)}px`;
+      noBtn.style.visibility = "visible";
+      noBtn.style.opacity = "1";
       lastNoPosition = { x, y };
     }
 
